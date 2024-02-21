@@ -4,11 +4,14 @@ import cors from "cors";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 import appRoutes from "./routes";
+import cookieParsor from "cookie-parser";
+import env from "./utils/envValidation";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
+app.use(cookieParsor(env.COOKIE_SECRETE));
 
 // route middleware
 app.use("/api/v1/routes", appRoutes);
