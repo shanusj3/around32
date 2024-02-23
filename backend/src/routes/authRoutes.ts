@@ -24,4 +24,5 @@ authRoutes.post(
 authRoutes.get("/auth-status", verifyToken, authController.verifyUser);
 // logout
 authRoutes.get("/logout", verifyToken, authController.logoutUser);
+
 export default authRoutes;

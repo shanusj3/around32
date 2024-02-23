@@ -15,20 +15,15 @@ export const verifyToken: RequestHandler = async (req, res, next) => {
   try {
     const token = req.signedCookies["auth_token"];
     if (!token || token.trim() === "") {
-      throw createHttpError(401, "token not recived");
+      throw createHttpError(401, "Token not received");
     }
-
-    return new Promise<void>((reject, resolve) => {
-      return jwt.verify(token, env.JWT_SECRETE, (err: any, success: any) => {
-        if (err) {
-          reject(err.message);
-          throw createHttpError(401, "token expired");
-        } else {
-          resolve();
-          res.locals.jwtData = success;
-          next();
-        }
-      });
+    jwt.verify(token, env.JWT_SECRETE, (err: any, success: any) => {
+      if (err) {
+        next(createHttpError(401, "Token expired"));
+      } else {
+        res.locals.jwtData = success;
+        next();
+      }
     });
   } catch (error) {
     next(error);

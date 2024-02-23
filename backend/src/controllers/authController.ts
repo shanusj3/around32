@@ -75,7 +75,7 @@ export const signinUser: RequestHandler<
     if (!validatePassword) {
       throw createHttpError(400, "Incorrect Password");
     }
-    const token = createToken(user.name, user._id.toString(), "7d");
+    const token = createToken(user._id.toString(), user._id.toString(), "7d");
     res.clearCookie("auth_token", {
       httpOnly: true,
       signed: true,
@@ -99,10 +99,17 @@ export const signinUser: RequestHandler<
 
 export const verifyUser: RequestHandler = async (req, res, next) => {
   try {
+    console.log("start");
+
+    console.log(res.locals.jwtData.id);
+
     const user = await User.findById(res.locals.jwtData.id);
+    console.log(user);
+
     if (!user) {
       throw createHttpError(401, "user note registerd or token malfunctioned");
     }
+
     if (res.locals.jwtData.id !== user._id.toString()) {
       throw createHttpError(401, "Permission didn't match");
     }
