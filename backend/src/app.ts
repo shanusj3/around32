@@ -9,7 +9,7 @@ import env from "./utils/envValidation";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(morgan("dev"));
 app.use(cookieParsor(env.COOKIE_SECRETE));
 

@@ -71,24 +71,23 @@ export const signinUser: RequestHandler<
       throw createHttpError(400, "User not reqisterd");
     }
 
-    const validatePassword = compare(password, user.password);
+    const validatePassword = await compare(password, user.password);
     if (!validatePassword) {
       throw createHttpError(400, "Incorrect Password");
     }
     const token = createToken(user._id.toString(), user._id.toString(), "7d");
     res.clearCookie("auth_token", {
       httpOnly: true,
-      signed: true,
-      path: "/",
-      domain: "localhost",
+      path: "/signin",
+      domain: "http://localhost:5173",
     });
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
     res.cookie("auth_token", token, {
       httpOnly: true,
       signed: true,
-      path: "/",
-      domain: "localhost",
+      path: "/signin",
+      domain: "http://localhost:5173",
       expires,
     });
     res.status(201).json({ name: user.name, email: user.email });

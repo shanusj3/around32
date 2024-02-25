@@ -21,7 +21,7 @@ authRoutes.post(
   authController.signinUser
 );
 // verifyuser
-authRoutes.get("/auth-status", verifyToken, authController.verifyUser);
+authRoutes.post("/auth-status", verifyToken, authController.verifyUser);
 // logout
 authRoutes.get("/logout", verifyToken, authController.logoutUser);
 
