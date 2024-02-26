@@ -13,23 +13,15 @@ export const createToken = (id: string, email: string, expiresIn: string) => {
 
 export const verifyToken: RequestHandler = async (req, res, next) => {
   try {
-    console.log("request recive");
-
     const token = await req.signedCookies["auth_token"];
-    console.log(token);
-
     if (!token || token.trim() === "") {
-      console.log("error");
-      return console.log(401, "Token not received");
+      throw createHttpError(401, "token not recived");
     }
-
     jwt.verify(token, env.JWT_SECRETE, (err: any, success: any) => {
       if (err) {
         next(createHttpError(401, "Token expired"));
       } else {
         res.locals.jwtData = success;
-        console.log(token);
-
         next();
       }
     });

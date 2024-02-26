@@ -9,6 +9,7 @@ import {
   checkAuthStatus,
   loginUser,
   logoutUser,
+  signupUser,
 } from "../helpers/api-communications";
 import { ApiError, getError } from "../utils/erros";
 import toast from "react-hot-toast";
@@ -59,12 +60,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast.success("Login Successfully", { id: "login" });
     }
   };
-  const signup = async (name: string, email: string, password: string) => {};
+  const signup = async (name: string, email: string, password: string) => {
+    toast.loading("Creating Account", { id: "signup" });
+    const data = await signupUser(name, email, password);
+    if (data) {
+      setUser({
+        email: data.email,
+        name: data.name,
+      });
+      setIsLoggedIn(true);
+      toast.success("Account created Successfully", { id: "signup" });
+    }
+  };
   const logout = async () => {
-    await logoutUser();
-    setIsLoggedIn(false);
-    setUser(null);
-    window.location.reload();
+    const data = await logoutUser();
+    if (data) {
+      setIsLoggedIn(false);
+      setUser(null);
+      window.location.reload();
+    }
   };
 
   const value = {

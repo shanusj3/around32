@@ -14,6 +14,9 @@ import Signin from "./pages/Signin.tsx";
 import Register from "./pages/Register.tsx";
 import { AuthProvider } from "./context/authContext.tsx";
 import { Toaster } from "react-hot-toast";
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:4050/api/v1";
+axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter(
   createRoutesFromElements(

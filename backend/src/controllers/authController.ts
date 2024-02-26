@@ -34,18 +34,18 @@ export const signupUser: RequestHandler<
 
     res.clearCookie("auth_token", {
       httpOnly: true,
-      path: "/",
-      domain: "localhost",
       signed: true,
+      domain: "localhost",
+      path: "/",
     });
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
     res.cookie("auth_token", token, {
       httpOnly: true,
-      path: "/",
-      domain: "localhost",
       expires,
       signed: true,
+      domain: "localhost",
+      path: "/",
     });
     res.status(201).json({ name: user.name, email: user.email });
   } catch (error) {
@@ -78,16 +78,17 @@ export const signinUser: RequestHandler<
     const token = createToken(user._id.toString(), user._id.toString(), "7d");
     res.clearCookie("auth_token", {
       httpOnly: true,
-      path: "/signin",
-      domain: "http://localhost:5173",
+      signed: true,
+      domain: "localhost",
+      path: "/",
     });
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
     res.cookie("auth_token", token, {
       httpOnly: true,
       signed: true,
-      path: "/signin",
-      domain: "http://localhost:5173",
+      domain: "localhost",
+      path: "/",
       expires,
     });
     res.status(201).json({ name: user.name, email: user.email });
@@ -98,17 +99,10 @@ export const signinUser: RequestHandler<
 
 export const verifyUser: RequestHandler = async (req, res, next) => {
   try {
-    console.log("start");
-
-    console.log(res.locals.jwtData.id);
-
     const user = await User.findById(res.locals.jwtData.id);
-    console.log(user);
-
     if (!user) {
       throw createHttpError(401, "user note registerd or token malfunctioned");
     }
-
     if (res.locals.jwtData.id !== user._id.toString()) {
       throw createHttpError(401, "Permission didn't match");
     }

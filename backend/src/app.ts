@@ -9,9 +9,9 @@ import env from "./utils/envValidation";
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: true, credentials: true }));
-app.use(morgan("dev"));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cookieParsor(env.COOKIE_SECRETE));
+app.use(morgan("dev"));
 
 // route middleware
 app.use("/api/v1/routes", appRoutes);
