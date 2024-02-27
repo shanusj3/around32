@@ -1,6 +1,18 @@
+import FeaturedCard from "../components/ui/FeaturedCard";
+import HomeBlogCard from "../components/ui/HomeBlogCard";
+import {
+  fetchFeatuedPost,
+  useGetAllBlogs,
+} from "../helpers/api-comunication-chats";
 import { categorise } from "../utils/categories";
 
 const HomePage = () => {
+  const { data: blogs, isLoading, error } = useGetAllBlogs();
+  const {
+    data: featuredData,
+    isLoading: featuredLoading,
+    error: featuredError,
+  } = fetchFeatuedPost();
   return (
     <div className="w-full min-h-screen px-2 md:px-14  justify-center">
       <div className="w-full">
@@ -51,12 +63,37 @@ const HomePage = () => {
             <h1 className="md:text-2xl font-extrabold text-blackMain">
               Featured Post
             </h1>
+            <div className="w-full">
+              <div className="w-full flex flex-wrap">
+                {featuredLoading ? (
+                  <>Loding</>
+                ) : featuredError ? (
+                  <>error</>
+                ) : (
+                  featuredData?.map((val) => (
+                    <FeaturedCard key={val._id} blog={val} />
+                  ))
+                )}
+              </div>
+            </div>
           </div>
           <div className="w-full md:w-1/3 h-[200px] p-4">
             <h4 className="text-lg font-bold text-blackThi">Whats New</h4>
             <h1 className="md:text-2xl font-extrabold text-blackMain">
               Latest Posts
             </h1>
+          </div>
+        </div>
+        <div className="w-full min-h-screen px-2 md:px-14 ">
+          <h4 className="text-lg font-bold text-blackThi">All post</h4>
+          <div className="w-full flex flex-wrap">
+            {isLoading ? (
+              <>Loding</>
+            ) : error ? (
+              <>error</>
+            ) : (
+              blogs?.map((val) => <HomeBlogCard key={val._id} blog={val} />)
+            )}
           </div>
         </div>
       </div>

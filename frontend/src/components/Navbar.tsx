@@ -1,19 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RiMenu3Line } from "react-icons/ri";
 import { LuPen } from "react-icons/lu";
 import { useAuth } from "../context/authContext";
-import { useEffect } from "react";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const auth = useAuth();
   const loggedIn = auth?.isLoggedIn;
   const handleLogout = async () => {
     await auth?.logout();
   };
-  useEffect(() => {
-    navigate("/");
-  }, [auth, navigate]);
+
   return (
     <nav className="flex items-center justify-between h-[80px] w-full px-2 md:px-14">
       <div className="flex gap-1 items-center">
